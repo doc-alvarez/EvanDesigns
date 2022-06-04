@@ -1,0 +1,77 @@
+{%- assign list_items = page.metafields.edcf.list | split: ' ' -%}
+{%- if list_items.size > 0 -%}
+<div class="page-width">
+  <div class="new-grid" data-view="xsmall">    
+    {%- for list_item in list_items -%}
+      {%- liquid
+        if pages[list_item] != empty
+          assign list_object = pages[list_item]
+        elsif collections[list_item] != empty
+          assign list_object = collections[list_item]
+        elsif all_products[list_item] != empty
+          assign list_object = all_products[list_item]
+        endif
+        if list_object.image
+          assign list_image = list_object.image
+        else 
+          assign list_image_name = list_item | append: '.png'
+          assign list_image = images[list_image_name]
+        endif      
+      -%}    
+      <div class="grid-item">
+        <a href="{{ list_object.url }}" class="collection-item">
+          <div class="collection-image-wrap collection-image--circle">
+              <div class="collection-image image-wrap">
+                {%- assign img_url = list_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                <img
+                  class="lazyload"
+                  src=""
+                  data-src="{{ img_url }}"
+                  data-aspectratio="{{ list_image.aspect_ratio }}"
+                  data-widths="[360, 720, 900, 1080]"
+                  data-sizes="auto"
+                  alt="{{ list_object.title | escape | strip }}">
+                <noscript>
+                  <img class="lazyloaded" src="{{ list_image | img_url: '400x' }}" alt="{{ list_object.title | escape | strip }}">
+                </noscript>                
+                <button class="list-item-btn">
+                  {%- if list_object.template_suffix == 'gallery' -%} Enter Gallery {%- else -%} Learn More {%- endif -%}
+                </button>                                
+              </div>
+          </div>
+          <span class="collection-item__title">{{ list_object.title | split: '|' | first }}</span>
+        </a>
+      </div>      
+    {%- endfor -%}    
+  </div>
+</div>  
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "List Items",
+    "settings": [],
+    "blocks" : [
+      {
+        "type": "heading",
+        "name": "Heading",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "List Items"
+          }
+        ]
+      }
+    ],
+    "presets": [{
+      "name": "List Items",
+      "blocks": [
+        {
+          "type": "heading"
+        }
+      ]
+    }]
+  }
+{% endschema %}

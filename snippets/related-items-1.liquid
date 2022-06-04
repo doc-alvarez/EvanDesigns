@@ -1,0 +1,10 @@
+{%- assign related_items = product.metafields.edcf.related_01 | split: '|' -%}
+{%- if related_items.size > 0 -%}
+  <div class="new-grid" data-view="small">    
+    {%- for related_item in related_items -%}
+      {%- if all_products[related_item] != empty -%}                
+        {%- render 'related-item-grid', related_product: all_products[related_item] -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}

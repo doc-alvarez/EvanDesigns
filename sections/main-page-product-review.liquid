@@ -1,0 +1,53 @@
+{%- liquid  
+  if page.metafields.edcf.headline != blank
+    assign headline = page.metafields.edcf.headline
+  else
+    assign headline = page.title
+  endif   
+-%}
+<div class="page-width page-content">
+  <header class="section-header text-center">
+    <h1 class="section-header__title">{{ headline }}</h1>
+  </header>
+
+  <div class="rte rte--nomargin">
+    {{ page.content }}
+  </div>
+  
+{% assign linklist = linklists['all-products'] %}
+<input id="prodSearch" type="text" placeholder="Start typing to search..." style="width:100%;margin-bottom:15px;">
+<table id="prodTable" cellspacing="0" cellpadding="0" border="1" >    
+ {% for link in linklist.links %}
+  {% assign thisproduct = link.object %}
+  <tr>
+    <td class="prodImage">
+      <img src="{{ thisproduct.featured_image.src | img_url: '100x100' }}" alt="{{ thisproduct.title | escape }}">
+    </td>
+    <td class="prodTitle">
+      <a class="productTitle" href="{{thisproduct.url}}#shopify-product-reviews" target="_blank">{{ thisproduct.title | truncatewords:15 }}</a>
+      <span class="shopify-product-reviews-badge" data-id="{{ thisproduct.id }}"></span>
+    </td>
+    <td class="prodWriteReview">
+      <a class="btn" href="{{thisproduct.url}}#shopify-product-reviews" target="_blank">Read/Write Reviews</a>
+    </td>  
+  </tr>
+ {% endfor %}
+</table> 
+</div>
+
+<script>
+//live search 
+jQuery("#prodSearch").on("keyup", function() {
+	var value = $(this).val().toLowerCase();
+    jQuery("#prodTable tr").filter(function() {
+    	jQuery(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+});  
+</script>
+
+{% schema %}
+  {
+    "name": "Product Review Page",
+    "settings": []
+  }
+{% endschema %}

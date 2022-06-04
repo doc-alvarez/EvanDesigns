@@ -1,0 +1,57 @@
+{%- liquid  
+  if page.metafields.edcf.headline != blank
+    assign headline = page.metafields.edcf.headline
+  else
+    assign headline = page.title
+  endif   
+-%}
+<div class="page-width page-content">
+  {%- render 'breadcrumbs' -%}
+  
+  <header class="section-header text-center">
+    <h1 class="section-header__title">{{ headline }}</h1>
+  </header>
+
+  <div id="testimonial-form" style="display:none;">
+    <div style="margin:0 auto;" class="pxFormGenerator" id="quqpxN_oP_N4ljnrI0T7zQ"></div>
+  </div>
+  
+  <div class="text-center">
+    <btn class="testimonial-button btn" data-fancybox="form" data-src="#testimonial-form">Submit Feedback</btn>
+  </div>  
+  
+  <div class="rte rte--nomargin">
+    {{ page.content }}
+  </div>
+</div>
+
+
+{%- liquid
+  assign list_size = linklists['testimonials-pagination'].links | size
+  assign first_link = linklists['testimonials-pagination'].links | first
+  assign last_link = linklists['testimonials-pagination'].links | last
+  for link in linklists['testimonials-pagination'].links
+    if link.url == page.url
+      assign prev_link_index = forloop.index0 | minus: 1
+	  assign next_link_index = forloop.index0 | plus: 1
+      assign next_link = linklists['testimonials-pagination'].links[next_link_index]
+      assign prev_link = linklists['testimonials-pagination'].links[prev_link_index]
+    endif
+  endfor
+-%}
+<div class="ed-testimonial-paging text-center">
+ {%- if page.url == first_link.url -%} <span>First</span> {%- else -%} <a href="{{ first_link.url }}">First</a> {%- endif -%} 
+ {%- if prev_link_index >= 0 %}<a href="{{ prev_link.url }}">&#9664; </a>{%- else %}<span>&#9664;</span>{%- endif -%}  
+ {%- for link in linklists['testimonials-pagination'].links %}
+  {%- if link.url == page.url -%} <span class="ed-testimonial-page_active">{{ forloop.index }}</span> {%- else -%} <a href="{{ link.url }}">{{ forloop.index }}</a> {%- endif %}
+ {%- endfor %}
+ {%- if next_link_index < list_size %}<a href="{{ next_link.url }}">&#9654;</a>{%- else %}<span>&#9654;</span>{%- endif %}
+ {%- if page.url == last_link.url -%} <span>Last</span> {%- else -%} <a href="{{ last_link.url }}">Last</a> {%- endif -%} 
+</div>
+
+{% schema %}
+  {
+    "name": "Testimonial Page",
+    "settings": []
+  }
+{% endschema %}

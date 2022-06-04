@@ -1,0 +1,22 @@
+{% capture description %}
+  {%- if product.empty? -%}
+    {{ 'home_page.onboarding.product_description' | t }}
+  {%- else -%}
+    {{ product.description }}
+  {%- endif -%}
+{% endcapture %}
+{%- if is_tab -%}
+  {% assign title = 'products.product.description' | t %}
+  {%- render 'tab', id: id, title: title, content: description -%}
+{%- else -%}
+  <div class="rte">
+  {%- if description contains '<!-- related -->' -%}
+    {%- assign product_description = description | split: '<!-- related -->' -%}   
+    {{ product_description[0] }}
+    {%- render 'related-items-1' -%}
+    {{ product_description[1] }}  
+  {%- else -%}
+    {{ description }}  
+  {%- endif -%}      
+  </div>
+{%- endif -%}

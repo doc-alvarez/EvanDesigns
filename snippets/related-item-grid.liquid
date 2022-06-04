@@ -1,0 +1,45 @@
+<div class="grid-item grid-product">
+  <div class="grid-item__content text-center">
+    {%- liquid
+      assign preview_image = related_product.featured_media.preview_image
+      assign img_url = preview_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.'
+      assign ratio = preview_image.aspect_ratio
+    -%}
+    <a href="{{ related_product.url | within: collection }}" class="grid-item__link">
+      <div style="height: 0; padding-bottom: {{ 100 | divided_by: ratio }}%;">
+        <img class="grid-product__image lazyload"
+             data-src="{{ img_url }}"
+             data-widths="[360, 540, 720, 900, 1080]"
+             data-aspectratio="{{ preview_image.aspect_ratio }}"
+             data-sizes="auto"
+             alt="{{ preview_image.alt | escape }}">
+        <noscript>
+           <img class="grid-product__image lazyloaded"
+                src="{{ preview_image | img_url: '400x' }}"
+                alt="{{ preview_image.alt | escape }}">
+        </noscript>
+      </div>
+              
+      <div class="grid-item__meta">
+        <div class="grid-item__meta-main">
+          <div class="grid-product__title">{{ related_product.title }}</div>          
+        </div>
+      </div>
+      
+      <div class="grid-item__meta-secondary">
+        <div class="grid-product__price">
+          {%- if related_product.price_varies -%}
+            <span class="grid-product__price--current">
+              {%- render 'price-varies', price: related_product.price_min -%}
+            </span>
+          {%- else -%}
+            <span class="grid-product__price--current">
+              {%- render 'price' with related_product.price -%}
+            </span>
+          {%- endif -%}  
+        </div>
+      </div>
+              
+    </a>
+  </div>
+</div>

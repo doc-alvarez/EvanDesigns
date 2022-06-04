@@ -1,0 +1,62 @@
+{%- liquid
+assign galkeys = "gallery_media_01,gallery_media_02,gallery_media_03,gallery_media_04,gallery_media_05,gallery_media_06,gallery_media_07,gallery_media_08,gallery_media_09,gallery_media_10,gallery_media_11,gallery_media_12,gallery_media_13,gallery_media_14,gallery_media_15,gallery_media_16,gallery_media_17,gallery_media_18,gallery_media_19,gallery_media_20,gallery_media_21,gallery_media_22,gallery_media_23,gallery_media_24,gallery_media_25,gallery_media_26,gallery_media_27,gallery_media_28,gallery_media_29,gallery_media_30,gallery_media_31,gallery_media_32,gallery_media_33,gallery_media_34,gallery_media_35,gallery_media_36,gallery_media_37,gallery_media_38,gallery_media_39,gallery_media_40,gallery_media_41,gallery_media_42,gallery_media_43,gallery_media_44,gallery_media_45,gallery_media_46,gallery_media_47,gallery_media_48,gallery_media_49,gallery_media_50" | split: ","
+assign gallery_id = page.metafields.edcf.gallery_id | handleize
+assign first_link = linklists[gallery_id].links | first
+assign last_link = linklists[gallery_id].links | last
+for link in linklists[gallery_id].links
+  if link.url == page.url
+    assign prev_link_index = forloop.index0 | minus: 1
+	assign next_link_index = forloop.index0 | plus: 1
+    assign next_link = linklists[gallery_id].links[next_link_index]
+    assign prev_link = linklists[gallery_id].links[prev_link_index]
+  endif
+endfor
+assign list_size = linklists[gallery_id].links | size
+assign first_page_count = 0
+assign last_page_count = 0
+for galkey in galkeys
+  assign galitem1 = first_link.object.metafields.edcf[galkey]
+  if galitem1
+    assign first_page_count = first_page_count | plus: 1
+  endif
+  assign galitem2 = last_link.object.metafields.edcf[galkey]
+  if galitem2
+    assign last_page_count = last_page_count | plus: 1
+  endif
+endfor
+assign first_page_empties = 48 | minus: first_page_count
+assign emptygal = true
+-%}
+<div class="new-grid gallery-grid" data-view="small">
+{%- liquid
+for galkey in galkeys offset:first_page_empties
+ assign galobj_found = page.metafields.edcf[galkey]  
+  assign galobj_index = forloop.index
+  if galobj_found
+      include 'page-gallery-grid', galobj: galobj_found, galobjid: galobj_index
+     assign emptygal = false
+  endif
+endfor
+for galkey in galkeys limit:first_page_empties
+ assign galobj_found = next_link.object.metafields.edcf[galkey]  
+  assign galobj_index = forloop.index | append: '-2'
+  if galobj_found
+      include 'page-gallery-grid', galobj: galobj_found, galobjid: galobj_index      
+     assign emptygal = false
+  endif
+endfor
+-%}
+{%- if emptygal == true -%}  
+  <br /><br /><h4 class="text-center">More images coming soon... Stay tuned....</h4>
+{%- endif -%}  
+</div>  
+
+<div class="gallery-paging text-center">
+ {%- if page.url == first_link.url -%} <span>First</span> {%- else -%} <a href="{{ first_link.url }}">First</a> {%- endif -%} 
+ {%- if prev_link_index >= 0 -%}<a href="{{ prev_link.url }}">&#9664; </a>{%- else -%}<span>&#9664;</span>{%- endif -%}  
+ {%- for link in linklists[gallery_id].links -%}
+  {%- if link.url == page.url -%} <span class="galpage_active">{{ forloop.index }}</span> {%- else -%} <a href="{{ link.url }}">{{ forloop.index }}</a> {%- endif -%}
+ {%- endfor -%}
+ {%- if next_link_index < list_size -%}<a href="{{ next_link.url }}">&#9654;</a>{%- else -%}<span>&#9654;</span>{%- endif -%}
+ {%- if page.url == last_link.url -%} <span>Last</span> {%- else -%} <a href="{{ last_link.url }}">Last</a> {%- endif -%} 
+</div>

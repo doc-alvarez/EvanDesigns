@@ -1,0 +1,58 @@
+          {%- if settings.enable_swatches -%}
+            {%- liquid              
+              assign swatch_file_extension = 'png'
+              assign color_count = 0
+              assign max_colors_show = 4
+              assign more_than_max = false
+              assign option_keys = "option_01,option_02,option_03,option_04,option_05" | split: ','
+            -%}
+
+            {%- for option_key in option_keys -%}
+			  {%- liquid
+                assign option_line = product.metafields.edcf[option_key]
+                assign is_color = false
+                if option_line    
+                  assign option_name = option_line | split: '|' | first
+                  assign option_name_comma = option_name | append: '|'
+                  assign option_values = option_line | remove_first: option_name_comma | split: '|'
+                  assign option_name_downcased = option_name | downcase                  
+                  assign option_index = forloop.index0
+                  if option_name_downcased contains 'color' or option_name_downcased contains 'colour'
+                    assign is_color = true
+                  else
+                    assign is_color = false
+                  endif
+                endif
+              -%}
+              {%- if is_color -%}                                
+                <div class="grid-product__colors">
+                  {%- for value in option_values -%}                    
+                      {%- if value contains 'Select' or value contains 'select' -%}{%- continue -%}{%- endif -%}                    
+                      {%- liquid                        
+                        assign color_file_name = value | handle | prepend: 'swatch-' | append: '.' | append: swatch_file_extension
+                        assign color_image = color_file_name | file_img_url: '50x50' | prepend: 'https:' | split: '?' | first
+                        assign color_swatch_fallback = value | split: ' ' | last | handle
+                        assign color_count = color_count | plus: 1
+                      -%}
+
+                      {%- if color_count <= max_colors_show -%}
+                        <span
+                          class="color-swatch color-swatch--small color-swatch--{{ value | handle }}"
+                          data-url="{{ product.url | within: collection }}"
+                          style="background-color: {{ color_swatch_fallback }};{% if images[color_file_name] != blank %}  background-image: url({{ color_image }});{% endif %}"
+                        >
+                          <span class="visually-hidden">{{ value }}</span>
+                        </span>
+                      {%- else -%}
+                        {%- assign more_than_max = true -%}
+                      {%- endif -%}                    
+                  {%- endfor -%}
+
+                  {%- if more_than_max -%}
+                    {%- assign more_colors = color_count | minus: max_colors_show -%}
+                    <small class="color-swatch__more">+{{ more_colors }}</small>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}

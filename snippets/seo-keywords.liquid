@@ -1,0 +1,18 @@
+{%- liquid
+  if request.page_type == 'product'
+    assign meta_keywords = product.metafields.edcf.keywords
+  elsif request.page_type == 'page'
+    assign meta_keywords = page.metafields.edcf.keywords
+  elsif request.page_type == 'collection'
+    assign meta_keywords = collection.metafields.edcf.keywords
+  elsif request.page_type == 'blog'
+    assign meta_keywords = blog.metafields.edcf.keywords
+  elsif request.page_type == 'article'
+    assign meta_keywords = article.metafields.edcf.keywords
+  elsif request.page_type == 'index'
+    assign meta_keywords = 'Model Trains, LEDs for Model Trains, LEDs for Diecast, LEDs for dollhouse, Model Builder,  paper models, modeling, model trains, model railroading, brick paper'
+  endif
+-%}
+{% if meta_keywords != '' %}
+<meta name="keywords" content="{{ meta_keywords }}" />
+{% endif %}

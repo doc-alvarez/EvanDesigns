@@ -1,0 +1,83 @@
+{%- liquid  
+  if page.metafields.edcf.headline != blank
+    assign headline = page.metafields.edcf.headline
+  else
+    assign headline = page.title
+  endif   
+-%}
+<div class="page-width page-content">
+  <header class="section-header text-center">
+    <h1 class="section-header__title">{{ headline }}</h1>
+  </header>
+
+  <div class="rte rte--nomargin">
+    {{ page.content }}
+  </div>
+</div>
+
+<div class="page-width">
+  {%- assign galkeys = "gallery_media_01,gallery_media_02,gallery_media_03,gallery_media_04,gallery_media_05,gallery_media_06,gallery_media_07,gallery_media_08,gallery_media_09,gallery_media_10,gallery_media_11,gallery_media_12,gallery_media_13,gallery_media_14,gallery_media_15,gallery_media_16,gallery_media_17,gallery_media_18,gallery_media_19,gallery_media_20,gallery_media_21,gallery_media_22,gallery_media_23,gallery_media_24,gallery_media_25,gallery_media_26,gallery_media_27,gallery_media_28,gallery_media_29,gallery_media_30,gallery_media_31,gallery_media_32,gallery_media_33,gallery_media_34,gallery_media_35,gallery_media_36,gallery_media_37,gallery_media_38,gallery_media_39,gallery_media_40,gallery_media_41,gallery_media_42,gallery_media_43,gallery_media_44,gallery_media_45,gallery_media_46,gallery_media_47,gallery_media_48,gallery_media_49,gallery_media_50" | split: "," -%}
+  {%- assign thumb_width = '340x255_crop_top' -%}
+  {%- assign image_width = '1024x1024' -%}
+
+  <div class="new-grid gallery-grid" data-view="small">
+    {% for galkey in galkeys %}
+      {%- assign galobj = page.metafields.edcf[galkey] -%}
+      {%- assign galobjid = forloop.index -%}
+      {% if galobj %}
+    
+        {%- liquid
+          assign galobj_props = galobj | split: '|'
+          assign galobj_file = galobj_props[0]
+          assign galobj_file_ext = galobj_file | split: '.' | last | prepend: '.'
+          assign galobj_file_ext_dc = galobj_file | split: '.' | last | downcase
+          assign galobj_title = galobj_props[1]
+          assign galobj_caption = galobj_props[2]    
+          assign thumb_width = '340x255_crop_top'
+          assign image_width = '1024x1024'
+        -%}
+  
+        {%- capture caption -%}<h5>{{ galobj_title | strip_html | escape }}</h5>{{ galobj_caption | strip_html | escape }}{%- endcapture -%}
+
+        {%- if galobj_file_ext_dc == 'youtube' -%} 
+          {%- assign youtubeid = galobj_file | remove: '.youtube' -%}
+          <div class="grid-item">        
+            <div data-fancybox="gallery" data-src="https://www.youtube.com/watch?v={{ youtubeid }}" data-caption="{{ caption }}">          
+              <img src="//i3.ytimg.com/vi/{{ youtubeid }}/hqdefault.jpg" width="340" height="255" loading="lazy" alt="{{ galobj_title | strip_html }}" />                                                                                                                   
+            </div>
+            <p>{{ galobj_title }}</p>
+          </div>    
+        {%- elsif galobj_file_ext_dc == 'mp4' or galobj_file_ext_dc == 'webm' or galobj_file_ext_dc == 'ogg' -%}
+          {%- assign galobj_png = galobj_file | replace: galobj_file_ext, '.png' -%}
+          {%- assign galobj_img = images[galobj_png] -%}
+          <div class="grid-item">
+            <div data-fancybox="gallery" data-src="{{ galobj_file | file_url }}" data-caption="{{ caption }}">
+              {%- if galobj_img != blank -%}
+                 <img src="{{ galobj_img | img_url: thumb_width }}" width="340" height="255" loading="lazy" alt="{{ galobj_title }}"/>
+              {%- else -%}
+                 <img src="{{ 'play-video.png' | file_img_url: thumb_width }}" width="340" height="255" loading="lazy" alt="{{ galobj_title | strip_html }}"/>
+              {%- endif -%}
+            </div>
+            <p>{{ galobj_title }}</p>
+          </div>     
+        {%- else -%}
+          {%- assign galobj_img = images[galobj_file] -%}
+          <div class="grid-item">        
+            <div data-fancybox="gallery" data-src="{{ galobj_img | img_url: image_width }}" data-caption="{{ caption }}">
+              <img src="{{ galobj_img | img_url: thumb_width }}" width="340" height="255" loading="lazy" alt="{{ galobj_title | strip_html }}"/>                  
+            </div>
+            <p>{{ galobj_title }}</p>
+          </div> 
+        {%- endif -%}    
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Gallery with content - 2",
+    "settings": []
+  }
+{% endschema %}

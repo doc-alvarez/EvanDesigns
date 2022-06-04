@@ -1,0 +1,25 @@
+{%- liquid  
+  if page.metafields.edcf.headline != blank
+    assign headline = page.metafields.edcf.headline
+  else
+    assign headline = page.title
+  endif   
+-%}
+<div class="page-width page-content">
+  <header class="section-header text-center">
+    <h1 class="section-header__title">
+      {{ headline }}
+    </h1>
+  </header>
+
+  <div class="rte rte--nomargin">
+    {{ page.content }}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Page (full width)",
+  "tag": "section"
+}
+{% endschema %}

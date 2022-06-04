@@ -1,0 +1,12 @@
+<script type='text/javascript'>let SEOMasterShop ='evandesigns.myshopify.com'; let SEOMasterCode = '85c2f011b88e58a5d584ae9691b4f97315df6bad';</script>﻿﻿<!-- Start : SEO Master BrokenLink Redirect -->
+<script type="text/javascript">
+var SEOMaster_location_search = window.location.search.replace('&',"-@-");
+window.fetch("https://api-seomaster.giraffly.com/api/v1/receive_url?shop="+SEOMasterShop+"&code="+SEOMasterCode+"&url="+window.location.pathname+SEOMaster_location_search)
+.then(response => response.json())
+.then(data => {
+  if(data.code == 200){
+    window.location.href = data.data
+  }
+})
+</script>
+<!-- END : SEO Master BrokenLink Redirect -->

@@ -1,0 +1,40 @@
+    {%- liquid
+    assign galobj_props = galobj | split: '|'
+    assign galobj_file = galobj_props[0]
+    assign galobj_file_ext = galobj_file | split: '.' | last | prepend: '.'
+    assign galobj_file_ext_dc = galobj_file | split: '.' | last | downcase
+    assign galobj_title = galobj_props[1]
+    assign galobj_caption = galobj_props[2]    
+    assign thumb_width = '340x255_crop_top'
+    assign image_width = '1024x1024'
+    -%}
+  
+    {%- capture caption -%}<h5>{{ galobj_title | escape }}</h5>{{ galobj_caption | escape }}{%- endcapture -%}
+
+    {%- if galobj_file_ext_dc == 'youtube' -%} 
+      {%- assign youtubeid = galobj_file | remove: '.youtube' -%}
+      <div class="grid-item">        
+        <div data-fancybox="gallery" data-src="https://www.youtube.com/watch?v={{ youtubeid }}" data-caption="{{ caption }}">          
+          <img src="//i3.ytimg.com/vi/{{ youtubeid }}/hqdefault.jpg" width="340" height="255" loading="lazy" alt="{{ galobj_title | strip_html }}" />                                                                                                                   
+        </div>        
+      </div>    
+    {%- elsif galobj_file_ext_dc == 'mp4' or galobj_file_ext_dc == 'webm' or galobj_file_ext_dc == 'ogg' -%}
+      {%- assign galobj_png = galobj_file | replace: galobj_file_ext, '.png' -%}
+      {%- assign galobj_img = images[galobj_png] -%}
+      <div class="grid-item">
+        <div data-fancybox="gallery" data-src="{{ galobj_file | file_url }}" data-caption="{{ caption }}">
+          {%- if galobj_img != blank -%}
+             <img src="{{ galobj_img | img_url: thumb_width }}" width="340" height="255" loading="lazy" alt="{{ galobj_title | strip_html }}"/>
+          {%- else -%}
+             <img src="{{ 'play-video.png' | file_img_url: thumb_width }}" width="340" height="255" loading="lazy" alt="{{ galobj_title | strip_html }}"/>
+          {%- endif -%}
+        </div>        
+      </div>     
+    {%- else -%}
+      {%- assign galobj_img = images[galobj_file] -%}
+      <div class="grid-item">        
+        <div data-fancybox="gallery" data-src="{{ galobj_img | img_url: image_width }}" data-caption="{{ caption }}">
+          <img src="{{ galobj_img | img_url: thumb_width }}" width="340" height="255" loading="lazy" alt="{{ galobj_title | strip_html }}"/>                  
+        </div>
+      </div> 
+    {%- endif -%}
