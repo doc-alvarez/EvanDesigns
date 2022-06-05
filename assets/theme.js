@@ -1649,17 +1649,20 @@ lazySizesConfig.expFactor = 4;
         if (count > 0) {
           this.wrapper.classList.remove('is-empty');
         } else {
-          this.wrapper.classList.add('is-empty');
+          this.wrapper?.classList.add('is-empty');
         }
   
         this.updateCount(count);
   
         // Append item markup
-        this.products.innerHTML = '';
-        this.products.append(items);
+        
+        if (this.product) {
+          this.products.innerHTML = '';
+          this.products.append(items);
+        }
   
         // Update subtotal
-        this.subtotal.innerHTML = theme.Currency.formatMoney(subtotal, theme.settings.moneyFormat);
+        if (this.subtotal) this.subtotal.innerHTML = theme.Currency.formatMoney(subtotal, theme.settings.moneyFormat);
   
         this.reInit();
   
@@ -1682,7 +1685,7 @@ lazySizesConfig.expFactor = 4;
         Quantity handling
       ==============================================================================*/
       initQtySelectors: function() {
-        this.form.querySelectorAll(selectors.qtySelector).forEach(el => {
+        this.form?.querySelectorAll(selectors.qtySelector).forEach(el => {
           var selector = new theme.QtySelector(el, {
             namespace: this.namespace,
             isCart: true
@@ -1709,7 +1712,7 @@ lazySizesConfig.expFactor = 4;
             if (cart.item_count > 0) {
               this.wrapper.classList.remove('is-empty');
             } else {
-              this.wrapper.classList.add('is-empty');
+              this.wrapper.classList?.add('is-empty');
             }
   
             this.buildCart();
@@ -4697,7 +4700,7 @@ lazySizesConfig.expFactor = 4;
         theme.sizeDrawer();
   
         theme.utils.prepareTransition(this.wrapper, function() {
-          this.wrapper.classList.add('is-active');
+          this.wrapper.classList?.add('is-active');
           this.wrapper.scrollTop = 0;
         }.bind(this));
   

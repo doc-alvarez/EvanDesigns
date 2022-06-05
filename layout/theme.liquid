@@ -10,8 +10,9 @@
   <meta name="theme-color" content="{{ settings.color_button }}">
   <link rel="canonical" href="{{ canonical_url }}">
   <link rel="preload" as="style" href="{{ 'theme.css' | asset_url }}">
-  <link rel="preload" as="script" href="{{ 'theme.min.js' | asset_url }}">
+  <link rel="preload" as="script" href="{{ 'theme.js' | asset_url }}">
   <link rel="preload" as="script" href="{{ 'custom.js' | asset_url }}">
+  <link rel="preload" href="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" as="script">
   <link rel="preconnect" href="https://cdn.shopify.com">
   <link rel="preconnect" href="https://fonts.shopifycdn.com">
   <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
@@ -19,6 +20,14 @@
   <link rel="dns-prefetch" href="https://maps.googleapis.com">
   <link rel="dns-prefetch" href="https://maps.gstatic.com">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+<!-- anti-flicker snippet (recommended)  -->
+<style>.async-hide { opacity: 0 !important} </style>
+<script>(function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;
+h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
+(a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
+})(window,document.documentElement,'async-hide','dataLayer',4000,
+{'GTM-N5834MH':true});</script>
 
   {%- if settings.favicon != blank -%}
     <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png" />
@@ -29,7 +38,6 @@
   {%- if page_description -%}
   <meta name="description" content="{{ page_description | escape }}">
   {%- endif -%}
-  
   {%- render 'seo-keywords' -%}
 
   {%- render 'social-meta-tags' -%}
@@ -98,13 +106,7 @@
     };
   </script>
 
-  {% include 'globo.filter.script' %}{{ content_for_header }}
-
-  <script src="{{ 'vendor-scripts-v1.js' | asset_url | split: '?' | first }}" defer="defer"></script>
-  <script src="{{ 'theme.min.js' | asset_url }}" defer="defer"></script>
   
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" async></script>
-  <script src="{{ 'custom.js' | asset_url }}" defer="defer"></script>
 
   {%- if request.page_type contains 'customers/' -%}
     <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
@@ -113,7 +115,6 @@
   
 <meta name="statvooVerification" content="951e10675eb6270a7ebdf0d65a4d8ca8" /> 
   
-<script src="//staticxx.s3.amazonaws.com/aio_stats_lib_v1.min.js?v=1.0" async></script>  
 
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -123,16 +124,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-N5834MH');</script>
 <!-- End Google Tag Manager -->      
 
-<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "bj5wq384n3");
-</script>  
   
 
 {% render 'gsf-conversion-pixels' %}
+
+<script src="{{ 'vendor-scripts-v1.js' | asset_url | split: '?' | first }}" defer="defer"></script>
+<script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'custom.js' | asset_url }}" defer="defer"></script>
+<script src="https://www.googleoptimize.com/optimize.js?id=OPT-5K99KBJ" defer="defer"></script>
+<script src="//staticxx.s3.amazonaws.com/aio_stats_lib_v1.min.js?v=1.0" defer="defer"></script>  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+{% include 'globo.filter.script' %}{{ content_for_header }}
 
 </head>
 
@@ -186,7 +189,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </script> 
   {% endif %} 
   
-  <script src="https://www.googleoptimize.com/optimize.js?id=OPT-5K99KBJ"></script>
   
   {% if template.suffix contains 'gallery' %}
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css" />
@@ -197,9 +199,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   
   {% include 'ajaxify-cart-so' %}
   
-  {%- if request.page_type == 'cart' -%}  
+ 
     {% render 'special-offers' %}
-  {%- endif -%}
+ 
   
   {% include 'seo-schema' %}  
   
@@ -210,6 +212,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </script>
   
   {% include 'globo.filter.action' %}
-      
+  
   </body>
 </html>
