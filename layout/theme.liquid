@@ -3,7 +3,6 @@
 <head>    
   <meta name="p:domain_verify" content="c6bd9c3fdc0d15ad79ff7157e5bc3c45"/>  
   <meta name="google-site-verification" content="VnvfmV_lCejFYzY3xy_M7HeMx3pw8fONKKyAytz7TsQ" />  
-  
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -12,22 +11,37 @@
   <link rel="preload" as="style" href="{{ 'theme.css' | asset_url }}">
   <link rel="preload" as="script" href="{{ 'theme.js' | asset_url }}">
   <link rel="preload" as="script" href="{{ 'custom.js' | asset_url }}">
-  <link rel="preload" href="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" as="script">
   <link rel="preconnect" href="https://cdn.shopify.com">
   <link rel="preconnect" href="https://fonts.shopifycdn.com">
-  <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
   <link rel="dns-prefetch" href="https://ajax.googleapis.com">
   <link rel="dns-prefetch" href="https://maps.googleapis.com">
   <link rel="dns-prefetch" href="https://maps.gstatic.com">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
+  <link rel="preload" href="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" as="script">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<!-- anti-flicker snippet (recommended)  -->
+  <!-- anti-flicker snippet (recommended) 
 <style>.async-hide { opacity: 0 !important} </style>
 <script>(function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;
 h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
 (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
 })(window,document.documentElement,'async-hide','dataLayer',4000,
-{'GTM-N5834MH':true});</script>
+{'GTM-N5834MH':true});</script> -->
+  
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.defer=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-N5834MH');</script>
+  <!-- End Google Tag Manager -->  
+  
+ 
+  <script src="https://www.googleoptimize.com/optimize.js?id=OPT-5K99KBJ" defer="defer"></script>
+  <script src="{{ 'vendor-scripts-v1.js' | asset_url | split: '?' | first }}" defer="defer"></script>
+  <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'custom.js' | asset_url }}" defer="defer"></script>
 
   {%- if settings.favicon != blank -%}
     <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png" />
@@ -113,29 +127,12 @@ h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
   {%- endif -%}
   
   
-<meta name="statvooVerification" content="951e10675eb6270a7ebdf0d65a4d8ca8" /> 
-  
-
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-N5834MH');</script>
-<!-- End Google Tag Manager -->      
-
-  
+<meta name="statvooVerification" content="951e10675eb6270a7ebdf0d65a4d8ca8" />   
 
 {% render 'gsf-conversion-pixels' %}
 
-<script src="{{ 'vendor-scripts-v1.js' | asset_url | split: '?' | first }}" defer="defer"></script>
-<script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'custom.js' | asset_url }}" defer="defer"></script>
-<script src="https://www.googleoptimize.com/optimize.js?id=OPT-5K99KBJ" defer="defer"></script>
-<script src="//staticxx.s3.amazonaws.com/aio_stats_lib_v1.min.js?v=1.0" defer="defer"></script>  
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
 {% include 'globo.filter.script' %}{{ content_for_header }}
+<script src="//staticxx.s3.amazonaws.com/aio_stats_lib_v1.min.js?v=1.0" defer="defer"></script>  
 
 </head>
 
